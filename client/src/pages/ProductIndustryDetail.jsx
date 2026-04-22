@@ -1,0 +1,451 @@
+import { useMemo, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import { motion } from "framer-motion";
+import {
+  ArrowLeft,
+  ArrowUpRight,
+  CheckCircle2,
+  CircleHelp,
+  Layers3,
+  ShieldCheck,
+  Sparkles,
+} from "lucide-react";
+import { applicationIndustries } from "../data/applicationIndustries";
+import PublicLayout from "../components/layout/PublicLayout";
+
+export default function ProductIndustryDetail() {
+  const { slug } = useParams();
+  const [activeTab, setActiveTab] = useState("applications");
+  // const [selectedProduct, setSelectedProduct] = useState(null);
+
+  const industry = useMemo(
+    () => applicationIndustries.find((item) => item.slug === slug),
+    [slug]
+  );
+
+  if (!industry) {
+    return (
+      <PublicLayout>
+        <section className="px-6 py-24">
+          <div className="mx-auto max-w-5xl rounded-[32px] border border-white/10 bg-white/5 p-10 text-center text-white backdrop-blur-xl">
+            <h1 className="text-4xl font-semibold">Industry not found</h1>
+            <p className="mt-4 text-white/60">
+              The requested category does not exist.
+            </p>
+            <Link
+              to="/products"
+              className="mt-8 inline-flex rounded-full bg-cyan-400 px-6 py-3 font-medium text-black"
+            >
+              Back to products
+            </Link>
+          </div>
+        </section>
+      </PublicLayout>
+    );
+  }
+
+  return (
+    <PublicLayout>
+      <section className="relative overflow-hidden">
+        <div className="absolute inset-0">
+          <img
+            src={industry.bannerImage}
+            alt={industry.title}
+            className="h-[420px] w-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#03101d]/95 via-[#03101d]/78 to-[#03101d]/45" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(34,211,238,0.18),transparent_20%),radial-gradient(circle_at_bottom_right,rgba(132,204,22,0.16),transparent_20%)]" />
+        </div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 26 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="relative mx-auto max-w-7xl px-6 pb-20 pt-28 text-white"
+        >
+          <Link
+            to="/products"
+            className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-sm text-white/80 backdrop-blur hover:bg-white/10"
+          >
+            <ArrowLeft size={16} />
+            Back to industries
+          </Link>
+
+          <div className="mt-12 max-w-4xl">
+            <p className="text-sm uppercase tracking-[0.35em] text-cyan-300/85">
+              Application Based Industry
+            </p>
+
+            <h1 className="mt-5 text-4xl font-semibold leading-tight md:text-6xl">
+              {industry.title}
+            </h1>
+
+            <p className="mt-5 max-w-3xl text-lg leading-8 text-white/75">
+              {industry.heroSubtitle}
+            </p>
+
+            <div className="mt-8 flex flex-wrap gap-4">
+              <a
+                href="#industry-content"
+                className="rounded-full bg-gradient-to-r from-orange-400 to-amber-300 px-6 py-3 font-medium text-black"
+              >
+                Explore Details
+              </a>
+              <Link
+                to="/enquiry"
+                className="rounded-full border border-white/15 bg-white/5 px-6 py-3 font-medium text-white backdrop-blur"
+              >
+                Request Quote
+              </Link>
+            </div>
+          </div>
+        </motion.div>
+
+        <div className="float-orb left-10 top-20 h-40 w-40 bg-cyan-400/10" />
+        <div className="float-orb right-10 top-10 h-52 w-52 bg-lime-400/10" />
+      </section>
+
+      <section
+        id="industry-content"
+        className="relative overflow-hidden bg-[#06111f] px-6 py-16 text-white"
+      >
+        <div className="float-orb left-[-80px] top-40 h-72 w-72 bg-cyan-400/10" />
+        <div className="float-orb right-[-80px] bottom-20 h-72 w-72 bg-orange-300/10" />
+
+        <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[300px_1fr]">
+          <motion.aside
+            initial={{ opacity: 0, x: -18 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="space-y-4"
+          >
+            <div className="rounded-[28px] border border-white/10 bg-white/5 p-4 backdrop-blur-xl">
+              <p className="mb-4 text-xs uppercase tracking-[0.35em] text-cyan-300/80">
+                Industries
+              </p>
+
+              <div className="space-y-3">
+                {applicationIndustries.map((item) => (
+                  <Link
+                    key={item.slug}
+                    to={`/products/${item.slug}`}
+                    className={`block rounded-2xl border px-4 py-3 text-sm font-medium transition ${
+                      slug === item.slug
+                        ? "border-cyan-300/40 bg-cyan-400/10 text-white"
+                        : "border-white/10 bg-white/5 text-white/80 hover:bg-white/10"
+                    }`}
+                  >
+                    {item.title}
+                  </Link>
+                ))}
+              </div>
+            </div>
+
+            <div className="overflow-hidden rounded-[28px] border border-white/10 bg-white/5 backdrop-blur-xl">
+              <div
+                className="h-44 bg-cover bg-center"
+                style={{ backgroundImage: `url(${industry.sideImage})` }}
+              />
+              <div className="p-5">
+                <div className="mb-3 inline-flex rounded-2xl border border-white/10 bg-[#0b1626] p-3">
+                  <CircleHelp className="h-5 w-5 text-cyan-300" />
+                </div>
+                <h3 className="text-2xl font-semibold leading-tight">
+                  Contact Us For Help?
+                </h3>
+                <p className="mt-3 text-sm leading-7 text-white/65">
+                  Contact us at the industrial nearest to you or submit a
+                  business inquiry online.
+                </p>
+                <Link
+                  to="/contact"
+                  className="mt-5 inline-flex rounded-full bg-gradient-to-r from-cyan-400 to-sky-300 px-5 py-3 text-sm font-semibold text-black"
+                >
+                  Contact Us
+                </Link>
+              </div>
+            </div>
+          </motion.aside>
+
+          <motion.main
+            initial={{ opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="space-y-8"
+          >
+            <div className="rounded-[32px] border border-white/10 bg-white/5 p-8 backdrop-blur-xl md:p-10">
+              <div className="grid gap-8 lg:grid-cols-[1.15fr_0.85fr]">
+                <div>
+                  <p className="text-sm uppercase tracking-[0.35em] text-orange-300/80">
+                    Orion Ropes
+                  </p>
+                  <h2 className="mt-4 text-4xl font-semibold leading-tight md:text-5xl">
+                    {industry.heroTitle}
+                  </h2>
+                  <div className="mt-4 h-1 w-16 rounded-full bg-gradient-to-r from-cyan-300 to-lime-400" />
+
+                  <div className="mt-6 space-y-5 text-lg leading-8 text-white/70">
+                    {industry.intro.map((para, index) => (
+                      <p key={index}>{para}</p>
+                    ))}
+                  </div>
+
+                  <div className="mt-8">
+                    <h3 className="text-2xl font-semibold">
+                      {industry.featuresTitle}
+                    </h3>
+
+                    <div className="mt-5 grid gap-4 md:grid-cols-2">
+                      {industry.features.map((feature) => (
+                        <div
+                          key={feature}
+                          className="flex items-start gap-3 rounded-2xl border border-white/10 bg-[#0b1626] p-4"
+                        >
+                          <CheckCircle2 className="mt-0.5 h-5 w-5 text-cyan-300" />
+                          <p className="text-white/75">{feature}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {industry.note ? (
+                    <p className="mt-8 leading-8 text-white/65">
+                      {industry.note}
+                    </p>
+                  ) : null}
+                </div>
+
+                <div className="space-y-5">
+                  <div className="overflow-hidden rounded-[28px] border border-white/10 bg-[#0b1626] p-4">
+                    <img
+                      src={industry.bannerImage}
+                      alt={industry.title}
+                      className="h-72 w-full rounded-[20px] object-cover"
+                    />
+                  </div>
+
+                  <div className="rounded-[28px] border border-white/10 bg-[radial-gradient(circle_at_top_left,rgba(34,211,238,0.12),transparent_25%),linear-gradient(135deg,rgba(255,255,255,0.08),rgba(255,255,255,0.03))] p-5">
+                    <div className="flex items-center gap-3">
+                      <Sparkles className="h-5 w-5 text-orange-300" />
+                      <span className="text-sm uppercase tracking-[0.3em] text-white/70">
+                        Premium Industrial Segment
+                      </span>
+                    </div>
+                    <p className="mt-4 leading-7 text-white/65">
+                      Explore category-specific products, applications, and
+                      properties in a premium format.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="rounded-[32px] border border-white/10 bg-white/5 p-8 backdrop-blur-xl">
+              <div className="inline-flex rounded-full border border-white/10 bg-[#0b1626] p-1">
+                <button
+                  onClick={() => setActiveTab("applications")}
+                  className={`rounded-full px-8 py-3 text-sm font-semibold transition ${
+                    activeTab === "applications"
+                      ? "bg-gradient-to-r from-lime-400 to-lime-500 text-black"
+                      : "text-white/75"
+                  }`}
+                >
+                  Applications
+                </button>
+                <button
+                  onClick={() => setActiveTab("properties")}
+                  className={`rounded-full px-8 py-3 text-sm font-semibold transition ${
+                    activeTab === "properties"
+                      ? "bg-gradient-to-r from-cyan-400 to-sky-300 text-black"
+                      : "text-white/75"
+                  }`}
+                >
+                  Properties
+                </button>
+              </div>
+
+              {activeTab === "applications" ? (
+                <div className="mt-8 grid gap-4 md:grid-cols-2">
+                  {industry.applicationsTab.map((item) => (
+                    <div
+                      key={item}
+                      className="flex items-start gap-3 rounded-2xl border border-white/10 bg-[#0b1626] p-4"
+                    >
+                      <ShieldCheck className="mt-0.5 h-5 w-5 text-lime-400" />
+                      <p className="text-white/75">{item}</p>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="mt-8 grid gap-4 md:grid-cols-2">
+                  {industry.propertiesTab.map((item) => (
+                    <div
+                      key={item}
+                      className="flex items-start gap-3 rounded-2xl border border-white/10 bg-[#0b1626] p-4"
+                    >
+                      <Layers3 className="mt-0.5 h-5 w-5 text-cyan-300" />
+                      <p className="text-white/75">{item}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {industry.products.length > 0 ? (
+              <div className="overflow-hidden rounded-[32px] border border-white/10 bg-white/5 backdrop-blur-xl">
+                <div className="border-b border-white/10 px-8 py-6">
+                  <h3 className="text-3xl font-semibold">Product Constructions</h3>
+                  <p className="mt-2 text-white/60">
+                    Explore available constructions and open product-level details.
+                  </p>
+                </div>
+
+                <div className="overflow-x-auto">
+                  <table className="min-w-full text-left text-white/80">
+                    <thead className="bg-[#0b1626] text-white/60">
+                      <tr>
+                        <th className="px-6 py-4 text-sm font-medium">Sr. No.</th>
+                        <th className="px-6 py-4 text-sm font-medium">Product Name</th>
+                        <th className="px-6 py-4 text-sm font-medium">Product Image</th>
+                        <th className="px-6 py-4 text-sm font-medium">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {/* console.log("INDUSTRY PRODUCTS:", industry.products); */}
+                      {industry.products.map((product, index) => (
+                        <tr
+                          key={product.id}
+                          className={`border-t border-white/10 ${
+                            index % 2 === 0 ? "bg-white/[0.02]" : "bg-transparent"
+                          }`}
+                        >
+                          <td className="px-6 py-6">{product.id}</td>
+                          <td className="px-6 py-6 font-semibold text-white">
+                            {product.name}
+                          </td>
+                          <td className="px-6 py-4">
+                            <div className="flex h-24 w-24 items-center justify-center rounded-2xl border border-white/10 bg-[#0b1626] p-3">
+                              <img
+                                src={product.image}
+                                alt={product.name}
+                                className="h-full w-full object-contain"
+                              />
+                            </div>
+                          </td>
+                          <td className="px-6 py-6">
+                            {/* <button
+                              onClick={() => setSelectedProduct(product)}
+                              className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-cyan-400 to-sky-300 px-5 py-3 text-sm font-semibold text-black"
+                            >
+                              View Details
+                              <ArrowUpRight size={16} />
+                            </button> */}
+
+                            <Link
+  to={`/products/${slug}/${product.productSlug}`}
+  className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-cyan-400 to-sky-300 px-5 py-3 text-sm font-semibold text-black"
+>
+  View Details
+  <ArrowUpRight size={16} />
+</Link>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            ) : (
+              <div className="rounded-[32px] border border-dashed border-white/15 bg-white/5 p-8 backdrop-blur-xl">
+                <h3 className="text-2xl font-semibold">Detailed Products Coming Next</h3>
+                <p className="mt-3 max-w-3xl leading-8 text-white/60">
+                  This category structure is ready. You can now add exact
+                  product constructions, images, and detailed tables in the same
+                  premium format.
+                </p>
+              </div>
+            )}
+          </motion.main>
+        </div>
+      </section>
+{/* 
+      {selectedProduct ? (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/65 p-4">
+          <motion.div
+            initial={{ opacity: 0, y: 22, scale: 0.97 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            className="w-full max-w-6xl overflow-hidden rounded-[32px] border border-white/10 bg-[#081321] text-white shadow-2xl"
+          >
+            <div className="border-b border-white/10 px-8 py-6">
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <p className="text-sm uppercase tracking-[0.35em] text-cyan-300/80">
+                    Product Detail
+                  </p>
+                  <h3 className="mt-3 text-3xl font-semibold">
+                    {selectedProduct.name}
+                  </h3>
+                </div>
+
+                <button
+                  onClick={() => setSelectedProduct(null)}
+                  className="rounded-xl border border-white/15 px-4 py-2 text-white/80 hover:bg-white/10"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+
+            <div className="px-8 py-8">
+              <div className="grid gap-8 md:grid-cols-[260px_1fr]">
+                <div className="rounded-[24px] border border-white/10 bg-[#0b1626] p-4">
+                  <img
+                    src={selectedProduct.image}
+                    alt={selectedProduct.name}
+                    className="h-64 w-full rounded-[18px] object-contain"
+                  />
+                </div>
+
+                <div>
+                  <p className="leading-8 text-white/70">
+                    {selectedProduct.description}
+                  </p>
+
+                  <div className="mt-6">
+                    <h4 className="text-xl font-semibold">Applications</h4>
+                    <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                      {selectedProduct.applications.map((item) => (
+                        <div
+                          key={item}
+                          className="rounded-2xl border border-white/10 bg-white/5 p-4 text-white/75"
+                        >
+                          {item}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="mt-6">
+                    <h4 className="text-xl font-semibold">Notes</h4>
+                    <ul className="mt-4 list-disc space-y-2 pl-5 text-white/70">
+                      {selectedProduct.notes.map((item) => (
+                        <li key={item}>{item}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-8 overflow-hidden rounded-[24px] border border-white/10 bg-white">
+                <img
+                  src={selectedProduct.tableImage}
+                  alt={`${selectedProduct.name} table`}
+                  className="w-full"
+                />
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      ) : null} */}
+    </PublicLayout>
+  );
+}
