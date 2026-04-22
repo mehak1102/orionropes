@@ -2,7 +2,7 @@ const clients = [
   "port.png",
   "coal.png",
   "cochin.png",
-  "dae.png",
+  // "dae.png",
   "escorts.png",
   "acc.png",
   "amns.png",
