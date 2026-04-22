@@ -1,0 +1,17 @@
+# node modules
+node_modules
+client/node_modules
+server/node_modules
+
+# build files
+dist
+client/dist
+build
+
+# env
+.env
+.env.*
+
+# misc
+.DS_Store
+coverage
