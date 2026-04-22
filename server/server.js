@@ -9,7 +9,24 @@ const app = express();
 
 connectDB();
 
-app.use(cors());
+// app.use(cors());
+const allowedOrigins = [
+  "http://localhost:5173", // local frontend
+  process.env.CLIENT_URL,  // deployed frontend
+];
+
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("CORS not allowed"));
+      }
+    },
+    credentials: true,
+  })
+);
 app.use(express.json());
 
 app.get("/", (req, res) => {
